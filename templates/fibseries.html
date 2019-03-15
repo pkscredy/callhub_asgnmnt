@@ -13,7 +13,7 @@
             aria-describedby="Enter a Number"
             placeholder="Enter a Number"
             style="width: 50%;"
-            name="fibNo"
+            name="fibno"
             required=True
           />
         </div>
@@ -27,15 +27,16 @@
     <div class="panel-body">
 
           <p> <b>Input Number</b> -  {{ num }}</p>
-          <p> <b>Output Number</b> - {{ result }}</p>
+          <p> <b>Nth Number</b> - {{ result }}</p>
 
           {% if cache %}
-          <p><b>Cache Status</b> - Cache is true</p>
+            <p> <b>Execution Time</b> - {{ cache_time }} Sec. </p>
+            <p> <b>Cache Status</b> - True </p>
           {% endif %}
 
           {% if execution_time %}
-        <p> <b>Execution Time</b> - {{ execution_time }} Sec. </p>
-        <p> <b>Cache Status</b> - False </p>
+            <p> <b>Execution Time</b> - {{ execution_time }} Sec. </p>
+            <p> <b>Cache Status</b> - False </p>
           {% endif %}
     </div>
   </div>
@@ -43,7 +44,8 @@
 
 <div class="container">
 
-<a class="btn btn-danger" href="{% url 'clear_cache'%}">Clear Cache</a>
+<!-- <a class="btn btn-danger" onclick="location.href={% url 'clear_cache'%}">Clear Cache</a> -->
+<a class="btn btn-danger" title="It'll clear cache from redis-server" href="{% url 'clear_cache'%}">Clear Cache</a>
 <!-- <button type="button" class="btn btn-danger">Clear Cache</button> -->
 </div>
 

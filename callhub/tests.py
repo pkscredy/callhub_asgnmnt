@@ -30,5 +30,5 @@ class FibSeriesTest(APITestCase):
         url = reverse('fibonacci')
         response = self.client.get(url)
         self.assertTemplateUsed(response, 'fibseries.html')
-        response = self.client.post(url, {'fibNo': self.num})
+        response = self.client.post(url, {'fibno': self.num})
         self.assertTrue(isinstance(response, HttpResponseRedirect))

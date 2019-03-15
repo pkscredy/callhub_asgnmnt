@@ -1,8 +1,9 @@
 from django.core.cache import cache
-from callhub.decorators import timeit
+from callhub.decorators import timeit, recursionlimit
 from django.conf import settings
 from callhub.dbapi import FibSeriesDbio
 from django.core.cache.backends.base import DEFAULT_TIMEOUT
+from callhub.constants import MAX_LIMIT
 CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
 
 
@@ -31,18 +32,19 @@ def fibonacci(fib_num):
 
 
 def retreive_num(num):
-    fib_obj = FibSeriesDbio().filter_objects({'num_key': num}).last()
-    if not fib_obj:
-        cache_dec(num)
-        fib_obj = FibSeriesDbio().get_object({'num_key': num})
+    with recursionlimit(MAX_LIMIT):
+        fib_obj = FibSeriesDbio().filter_objects({'num_key': num}).last()
+        if not fib_obj:
+            cache_dec(num)
+            fib_obj = FibSeriesDbio().get_object({'num_key': num})
+            return {
+                'num': fib_obj.num_key,
+                'result': fib_obj.result,
+                'execution_time': fib_obj.exec_time
+            }
+        cache.set(fib_obj.num_key, fib_obj.result, timeout=CACHE_TTL)
         return {
             'num': fib_obj.num_key,
             'result': fib_obj.result,
             'execution_time': fib_obj.exec_time
         }
-    cache.set(fib_obj.num_key, fib_obj.result, timeout=CACHE_TTL)
-    return {
-        'num': fib_obj.num_key,
-        'result': fib_obj.result,
-        'execution_time': fib_obj.exec_time
-    }
