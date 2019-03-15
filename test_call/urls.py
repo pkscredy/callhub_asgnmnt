@@ -15,10 +15,11 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from callhub.views import FibView
+from callhub.views import FibView, FibHtmlView, ClearCacheView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^fib_num/$', FibView.as_view()),
-    # url(r'^fibonacci/$', )
+    url(r'^fib_num/(?P<num>\d+)/$', FibView.as_view(), name='fib_num'),
+    url(r'^fibonacci/$', FibHtmlView.as_view(), name='fibonacci'),
+    url(r'^clear_cache/$', ClearCacheView.as_view(), name='clear_cache'),
 ]

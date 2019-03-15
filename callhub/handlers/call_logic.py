@@ -40,6 +40,7 @@ def retreive_num(num):
             'result': fib_obj.result,
             'execution_time': fib_obj.exec_time
         }
+    cache.set(fib_obj.num_key, fib_obj.result, timeout=CACHE_TTL)
     return {
         'num': fib_obj.num_key,
         'result': fib_obj.result,
