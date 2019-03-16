@@ -1,12 +1,14 @@
-from django.core.cache import cache
-from callhub.decorators import timeit
-from callhub.utils import RecursionLimit
 from django.conf import settings
-from callhub.dbapi import FibSeriesDbio
+from django.core.cache import cache
 from django.core.cache.backends.base import DEFAULT_TIMEOUT
-from callhub.constants import MAX_LIMIT
 from django.db import transaction
+
+from callhub.constants import MAX_LIMIT
+from callhub.dbapi import FibSeriesDbio
+from callhub.decorators import timeit
 from callhub.models import FibSeries
+from callhub.utils import RecursionLimit
+
 CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
 
 
@@ -49,7 +51,6 @@ def retreive_num(num):
                 'result': fib_obj.result,
                 'execution_time': fib_obj.exec_time
             }
-        cache.set(fib_obj.num_key, fib_obj.result, timeout=CACHE_TTL)
         reload_result_to_cache()
         return {
             'num': fib_obj.num_key,

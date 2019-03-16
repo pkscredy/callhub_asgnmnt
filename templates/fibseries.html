@@ -44,18 +44,10 @@
 
 <div class="container">
 
-<!-- <a class="btn btn-danger" onclick="location.href={% url 'clear_cache'%}">Clear Cache</a> -->
+
 <a class="btn btn-danger" title="It'll clear cache from redis-server" href="{% url 'clear_cache'%}">Clear Cache</a>
 
-<!-- <a class="btn btn-danger" title="It'll delete all calculated result" href="{% url 'clear_cache'%}">Delete DB</a> -->
-
-<!-- <button type="button" class="btn btn-danger">Clear Cache</button> -->
 </div>
 
-<!-- <div class="submit">
-    <input name="stage" type="number" value=0 hidden/>
-    <input type="hidden" name="test" value="12" />
-      <button type="submit" name="submit" class="btn btn-primary"  onclick="location.href={% url 'clear_cache'%}">clear</button>
-</div> -->
 
 {% endblock %}

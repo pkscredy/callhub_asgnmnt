@@ -1,7 +1,7 @@
-from callhub.models import FibSeries
-from base.dbapi import AbstractBaseDbIO
 from django_redis import get_redis_connection
-# from callhub.handlers.call_logic import cache_dec
+
+from base.dbapi import AbstractBaseDbIO
+from callhub.models import FibSeries
 
 
 class FibSeriesDbio(AbstractBaseDbIO):
@@ -13,7 +13,3 @@ class FibSeriesDbio(AbstractBaseDbIO):
     @staticmethod
     def tear_down():
         get_redis_connection("default").flushall()
-
-    @staticmethod
-    def clear_fib_object():
-        FibSeries.objects.all().delete()

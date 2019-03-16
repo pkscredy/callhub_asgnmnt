@@ -15,7 +15,8 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from callhub.views import FibView, FibHtmlView, ClearCacheView
+
+from callhub.views import ClearCacheView, FibHtmlView, FibView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),

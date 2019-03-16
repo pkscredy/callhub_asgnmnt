@@ -1,7 +1,8 @@
-from rest_framework.test import APITestCase
-from callhub.handlers.call_logic import retreive_num
-from django.urls import reverse
 from django.http import HttpResponseRedirect
+from django.urls import reverse
+from rest_framework.test import APITestCase
+
+from callhub.handlers.call_logic import retreive_num
 from callhub.models import FibSeries
 
 
