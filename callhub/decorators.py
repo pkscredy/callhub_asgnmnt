@@ -1,5 +1,4 @@
 import time
-import sys
 from callhub.dbapi import FibSeriesDbio
 from callhub.models import FibSeries
 
@@ -29,15 +28,3 @@ def create_num(num, result, total_time):
             'exec_time': total_time
         }
     )
-
-
-class recursionlimit:
-    def __init__(self, limit):
-        self.limit = limit
-        self.old_limit = sys.getrecursionlimit()
-
-    def __enter__(self):
-        sys.setrecursionlimit(self.limit)
-
-    def __exit__(self, type, value, tb):
-        sys.setrecursionlimit(self.old_limit)

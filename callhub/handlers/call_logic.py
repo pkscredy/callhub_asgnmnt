@@ -1,9 +1,12 @@
 from django.core.cache import cache
-from callhub.decorators import timeit, recursionlimit
+from callhub.decorators import timeit
+from callhub.utils import RecursionLimit
 from django.conf import settings
 from callhub.dbapi import FibSeriesDbio
 from django.core.cache.backends.base import DEFAULT_TIMEOUT
 from callhub.constants import MAX_LIMIT
+from django.db import transaction
+from callhub.models import FibSeries
 CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
 
 
@@ -32,7 +35,11 @@ def fibonacci(fib_num):
 
 
 def retreive_num(num):
-    with recursionlimit(MAX_LIMIT):
+    """
+    used RecursionLimit context manager here for a case of large number
+    recrusive call(max recrusion depth is 1000 so.)
+    """
+    with RecursionLimit(MAX_LIMIT):
         fib_obj = FibSeriesDbio().filter_objects({'num_key': num}).last()
         if not fib_obj:
             cache_dec(num)
@@ -43,8 +50,20 @@ def retreive_num(num):
                 'execution_time': fib_obj.exec_time
             }
         cache.set(fib_obj.num_key, fib_obj.result, timeout=CACHE_TTL)
+        reload_result_to_cache()
         return {
             'num': fib_obj.num_key,
             'result': fib_obj.result,
             'execution_time': fib_obj.exec_time
         }
+
+
+def reload_result_to_cache():
+    """
+    This function insert the result into cache. Incase you have clear cache
+    and result is serving by db.
+    """
+    fib_objs = FibSeries.objects.all()
+    with transaction.atomic():
+        for obj in fib_objs:
+            cache.set(obj.num_key, obj.result, timeout=CACHE_TTL)

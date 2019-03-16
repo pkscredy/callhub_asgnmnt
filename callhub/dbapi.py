@@ -13,3 +13,7 @@ class FibSeriesDbio(AbstractBaseDbIO):
     @staticmethod
     def tear_down():
         get_redis_connection("default").flushall()
+
+    @staticmethod
+    def clear_fib_object():
+        FibSeries.objects.all().delete()
