@@ -6,4 +6,4 @@ then it serves the result from backend and also reinsert all result from backend
 If query search does not exist in backend also then it calculates the result for that number
 and also set cache for all number before to query number.
 
-[![Result](result.png)](result.png)
+![Result](result.png)
